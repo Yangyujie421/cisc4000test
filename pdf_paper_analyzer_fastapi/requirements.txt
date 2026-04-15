@@ -1,0 +1,13 @@
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+aiofiles>=23.2.1
+PyMuPDF>=1.24.9
+pdfplumber>=0.11.0
+PyYAML>=6.0.1
+openai>=1.40.0
+doclayout-yolo>=0.0.4
+huggingface-hub>=0.24.0
+numpy<2.0
+numexpr>=2.14.1
+bottleneck>=1.6.0

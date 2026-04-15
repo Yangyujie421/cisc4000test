@@ -1,0 +1,58 @@
+llm_api:
+  base_url: "https://turingai.plus/v1"
+  api_key: "sk-jQ81nJSCjWqlQxRIsTuntjpeV2YGMFs7kzWCKApP0tzYLEHQ"
+  model_name: "gpt-5-mini"
+  timeout: 120
+  system_prompt: "You are a helpful research assistant."
+  max_retries: 0
+
+paths:
+  prompt_dir: "prompts"
+  output_dir: "data/output"
+  structured_output: "data/output/structured_paper.json"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+
+structure:
+  preamble_label: "preamble"
+  sections:
+    abstract:
+      pattern: "^abstract\\b"
+      prompt: "abstract_prompt.txt"
+    introduction:
+      pattern: "^(\\d+\\.?\\s*)?introduction\\b"
+      prompt: "introduction_prompt.txt"
+    method:
+      pattern: "^(\\d+\\.?\\s*)?(materials\\s+and\\s+)?methods?\\b"
+      prompt: "method_prompt.txt"
+    results:
+      pattern: "^(\\d+\\.?\\s*)?results?\\b"
+      prompt: "result_prompt.txt"
+  active_sections:
+    - introduction
+    - method
+    - results
+
+presentation:
+  max_slides: 10
+  slides_prompt: "presentation_outline_prompt.txt"
+  voice_prompt: "presentation_voiceover_prompt.txt"
+  voice_language: "English"
+  default_duration_seconds: "15-25"
+  method_char_limit: 800
+  results_char_limit: 600
+  table_prompt: "presentation_table_prompt.txt"
+  visual_prompt: "presentation_visual_semantic_prompt.txt"
+
+visual_selection:
+  enabled: true
+  model_repo: "juliozhao/DocLayout-YOLO-DocStructBench"
+  model_file: "doclayout_yolo_docstructbench_imgsz1024.pt"
+  imgsz: 1024
+  conf: 0.25
+  scale: 2.0
+  max_pages: 25
+  max_candidates_per_class: 5
+  min_llm_score: 0.5
