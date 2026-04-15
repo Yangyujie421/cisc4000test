@@ -1,0 +1,109 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usefonttheme{serif}
+\usepackage{ctex} % 中文支持
+
+\title{研究评估方法：观点-图一体化框架}
+\author{汇报人}
+\institute{XXX实验室}
+\date{\today}
+
+\begin{document}
+
+% ========== 封面页 ==========
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% ========== 第1页：研究动机与问题概览 ==========
+\begin{frame}{研究动机与问题概览}
+    \textbf{研究评估的四大痛点}
+    \begin{itemize}
+        \item 现有基于LLM的评估对提示高度敏感导致结果不稳定
+        \item 小模型或微调方法易漏掉语义复杂性与事实错误
+        \item 需低计算/低API开销同时保持稳健泛化表现
+        \item 在现有LLM中，客观衡量新颖性与抄袭仍未解决
+    \end{itemize}
+    \vspace{1em}
+    \textit{接下来介绍本文提出的方法总体框架与目标}
+\end{frame}
+
+% ========== 第2页：方法总体框架 ==========
+\begin{frame}{方法总体框架}
+    \textbf{观点-图一体化评估框架}
+    \begin{itemize}
+        \item 总体框架：LLM拆解观点并构建可扩展观点-图
+        \item 用BERT嵌入与余弦相似度连接观点构建子图
+        \item 提供无监督标签传播与有监督GNN两种实现
+        \item 目标是降低API/计算成本并保持评估鲁棒性
+    \end{itemize}
+    \vspace{1em}
+    \textit{下一页细化观点提取与子图/跨图连接步骤}
+\end{frame}
+
+% ========== 第3页：观点提取与图构建细节 ==========
+\begin{frame}{观点提取与图构建细节}
+    \textbf{从文本到稠密可扩展观点图}
+    \begin{itemize}
+        \item 观点提取：提示式LLM把想法分解为可评估节点
+        \item 子图构建：每个观点连入同子图top-k（k=5）节点
+        \item 跨子图连接：每观点连到不同子图top-m（m=10）节点
+        \item 边权采用余弦相似度，保证可线性扩展图结构
+    \end{itemize}
+    \vspace{1em}
+    \textit{接着介绍两种评估实现：标签传播与GNN}
+\end{frame}
+
+% ========== 第4页：评估实现：LabelProp 与 GraphEval-GNN ==========
+\begin{frame}{评估实现：LabelProp 与 GraphEval-GNN}
+    \textbf{轻量与学习式双路径评估}
+    \begin{itemize}
+        \item 标签传播：one-hot初始化，迭代到max iters=5/2收敛
+        \item GNN评估：BERT嵌入初始化节点特征并用加权GNN
+        \item GNN聚合：带边权、ReLU、MEAN聚合与CONCAT再线性变换
+        \item 子图池化：MEAN+MAX池化后MLP+Softmax输出想法标签
+    \end{itemize}
+    \vspace{1em}
+    \textit{随后说明新颖性/抄袭控制与技术创新点}
+\end{frame}
+
+% ========== 第5页：新颖性控制与技术创新 ==========
+\begin{frame}{新颖性控制与技术创新}
+    \textbf{时间特征与合成负样本控抄袭}
+    \begin{itemize}
+        \item 在观点表示中加入时间特征以降低抄袭评分
+        \item 训练集中合成与早期高度相似的负样本并标低分
+        \item 技术创新：LLM抽取细粒度观点+BERT相似度构图
+        \item 提供轻量LabelProp与有训练GraphEval-GNN两方案
+    \end{itemize}
+    \vspace{1em}
+    \textit{下一页展示实验设置、数据与关键结果概要}
+\end{frame}
+
+% ========== 第6页：实验设置与关键结果概览 ==========
+\begin{frame}{实验设置与关键结果概览}
+    \textbf{数据规模与方法对比结论}
+    \begin{itemize}
+        \item 超参数示例：temperature=0.1，intra k=5，inter m=10
+        \item 数据划分：FActScore训练/验证/测试=7:1:2
+        \item 大型可扩展集：ICLR 5,192 篇，NeurIPS 3,685 篇
+        \item GraphEval-GNN在多项消融中优于LightGCN与Hybrid方法
+    \end{itemize}
+    \vspace{1em}
+    \textit{接下来评估证据可信度与现有局限并给出建议}
+\end{frame}
+
+% ========== 第7页：证据、局限与总结建议 ==========
+\begin{frame}{证据、局限与总结建议}
+    \textbf{结论可信但需补充量化指标}
+    \begin{itemize}
+        \item 实验涉及时间泛化与大规模可扩展性，设计较全面
+        \item 薄弱点：缺乏具体准确率/F1/AUC等定量数值
+        \item 未量化幻觉率与成本，也未说明训练资源消耗
+        \item 建议：补充表格数值、统计显著性与计算成本分析
+    \end{itemize}
+    \vspace{1em}
+    \textit{汇报结束，可进入问答或深入结果量化讨论}
+\end{frame}
+
+\end{document}

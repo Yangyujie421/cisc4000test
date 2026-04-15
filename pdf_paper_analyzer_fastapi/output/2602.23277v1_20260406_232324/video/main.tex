@@ -1,0 +1,78 @@
+
+\documentclass{beamer}
+\usepackage[UTF8]{ctex}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{items}[circle]
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\definecolor{slidebg}{HTML}{FFFFFF}
+\setbeamercolor{background canvas}{bg=slidebg}
+\begin{document}
+% ===== Slide 1: Problem and Motivation =====
+\begin{frame}{Problem and Motivation}
+    \textbf{Zeroth-order control for combinatorial Stackelberg congestion games.}
+    \vspace{1em}
+    \begin{itemize}
+        \item • We propose treating combinatorial follower equilibrium solvers as nondifferentiable black boxes and optimizing leader parameters via zeroth-order randomized smoothing to robustly handle hyper-objective nonsmoothness in Stackelberg congestion games.
+        \item • This avoids differentiating through large inner solvers and instead uses two-point finite-difference gradient estimators, enabling scalability when strategy sets are exponentially large or equilibria change discontinuously with parameters.
+        \item • To support combinatorial linear minimization, we introduce ZDD-based exact or stratified subsampling LMOs and derive convergence and error-propagation guarantees for the Frank–Wolfe inner solver and outer ZOS optimizer.
+    \end{itemize}
+    \vspace{1em}
+    \textit{Lead into the method overview of the inner Frank–Wolfe equilibrium solver and the outer zeroth-order optimizer.}
+\end{frame}
+
+% ===== Slide 2: Method =====
+\begin{frame}{Method}
+    \textbf{Inner Frank–Wolfe and outer zeroth-order loop.}
+    \vspace{1em}
+    \begin{itemize}
+        \item • Method figure: Flow of inner Frank–Wolfe equilibrium solver and outer zeroth-order randomized-smoothing optimizer with two-point estimator.
+        \item • Inner loop: projection-free Frank–Wolfe runs T iterations using a combinatorial LMO (exact shortest-path or ZDD-based sampling).
+        \item • LMO: exact poly-time or ZDD DP for NP-hard cases, or subsampled candidates using uniform or length-stratified sampling.
+        \item • Outer ZOS: randomized-ball smoothing, mini-batched two-point finite differences, projected updates, and parameter choices to control inner approximation error.
+    \end{itemize}
+    \vspace{1em}
+    \textit{Next show main experimental performance versus the Diff baseline with runtime and memory comparisons.}
+\end{frame}
+
+% ===== Slide 3: Results =====
+\begin{frame}[t]{Results}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.50\textwidth}
+            \textbf{Empirical speed and memory dominance over Diff baseline.}
+            \vspace{0.8em}
+            {\small
+            \begin{itemize}
+                \item • Main result: ZOS matches Diff in social cost at small FW gaps while outperforming the Diff baseline by approximately 20–1000× per-iteration speed.
+                \item • ZOS uses far less memory ($\leq$1.7 GiB peak) versus Diff’s 10–194 GiB, enabling practical scaling on large ZDD instances.
+            \end{itemize}
+            }
+            \vspace{0.8em}
+            \textit{Conclude with key practical findings, trade-offs, and limitations.}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[width=\linewidth,height=0.7\textheight,keepaspectratio]{\detokenize{../main_figure_table/table_1.png}}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ===== Slide 4: Key Findings =====
+\begin{frame}{Key Findings}
+    \textbf{Practical guarantees and sampling trade-offs for scalable Stackelberg control.}
+    \vspace{1em}
+    \begin{itemize}
+        \item • Treating equilibrium solvers as black boxes enables scalability and large speedups by avoiding costly backpropagation through many inner steps.
+        \item • ZDD-based stratified sampling recovers accuracy with moderate sample sizes (≈1000), reduces memory, but may plateau or require large m in some regimes.
+        \item • Theoretical error propagation yields Goldstein-stationarity guarantees while practical choices of T, m, B, ρ, and η balance inner variance and outer convergence.
+    \end{itemize}
+    \vspace{1em}
+    \textit{End of presentation; invite questions about implementation details and parameter tuning.}
+\end{frame}
+\end{document}

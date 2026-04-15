@@ -1,0 +1,7 @@
+We need robust leader tuning when follower equilibria change discontinuously. Zeroth-order smoothing lets us optimize without differentiating through the inner solver, improving scalability, so I'll outline the algorithm next.
+###
+The design alternates a projection-free Frank–Wolfe equilibrium solve with a zeroth-order outer update, keeping the inner solver nondifferentiable. This structure lets us parallelize evaluations and control approximation error before showing runtime gains.
+###
+Main result: ZOS matches Diff's social cost while running 20–1000× faster per iteration and using at most 1.7 GiB memory.
+###
+Treating equilibria as black boxes plus ZDD stratified sampling yields practical speedups, controllable error, and parameter trade-offs.
